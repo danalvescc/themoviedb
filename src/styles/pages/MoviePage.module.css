@@ -1,0 +1,160 @@
+.container{
+    margin-top: 40px;
+    width: 100vw;
+    max-width: 1080px;
+    margin: 40px auto;
+}
+
+.container header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    height: 59px;
+    width: 100%;
+
+    background-color: var(--gray);
+}
+
+.container header h2{
+    color:var(--blue);
+    margin-left: 30px;
+    
+    font-size:1.5rem;
+    font-family: 'Abel', sans-serif;
+    font-weight: 300;
+}
+
+.container span{
+    margin-right: 20px;
+    color: var(--hardGray);
+    font-size: .8rem;
+}
+
+.bodyMovie{
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--lightGray);
+}
+
+.bodyMovie img{
+    max-height: 500px;
+}
+
+.bodyMovie h3{
+    color: var(--blue);
+    font-family: 'Abel', sans-serif;
+}
+
+.bodyMovie > div{
+    padding: 30px;
+}
+
+.bodyMovie div hr{
+    margin-left: 0;
+    margin-right: 0;
+    opacity: .2;
+    border: 1px solid var(--blue);
+}
+
+.bodyMovie p{
+    margin-bottom: 20px;
+    color: var(--text);
+    font-size: .9rem;
+}
+
+.cardLine{
+    display: flex;
+    margin-top: 10px;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.card{
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+}
+
+.card p{
+    margin-top: 5px;
+}
+
+.percentCircle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: var(--blue);
+    height:100px;
+    width: 100px;
+    border-radius:50%;
+}
+
+.percentCircle div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height:80px;
+    width: 80px;
+    border-radius: 50%;
+    border: 6px solid var(--lightGreen);
+}
+
+.percentCircle div p{
+    color: var(--lightGreen);
+    margin: 0;
+    font-size: 2rem;
+    font-family: 'Abel', sans-serif;
+}
+
+.bodyMovie footer{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+}
+
+.bodyMovie ul{
+    display: flex;
+    height: 24px;
+    gap: 5px;
+    margin: 0;
+    list-style-type: none;
+    padding-inline-start: 0;
+}
+
+.bodyMovie ul li{
+    font-size:.7rem;
+    background-color: var(--white);
+    border: 1px solid var(--blue);
+    color: var(--blue);
+    border-radius: 12px;
+    padding: 3px 6px;
+}
+
+@media only screen and (max-width: 720px) {
+    .bodyMovie {
+        flex-direction: column-reverse;
+    }
+
+    .bodyMovie img{
+        width: 320px;
+        height: 480px;
+        margin: 20px auto;
+    }
+
+    .container header{
+        flex-direction: column;
+        padding: 10px auto;
+        height:auto;
+    }
+
+    .container header h2{
+        margin: 5px 0;
+    }
+    .container header span{
+        margin-bottom: 5px;
+    }
+}

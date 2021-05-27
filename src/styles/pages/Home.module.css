@@ -1,0 +1,101 @@
+.container{
+    display: flex;
+    flex-direction: column;
+
+    margin: 0 auto;
+
+    max-width: 1020px;
+    width:90vw;
+}
+
+.container input[type='text']{
+    margin: 3rem 0;
+    padding: 15px 20px;
+
+    color:  black;
+    border:1px solid var(--gray);
+    border-radius: 50vh;
+
+    background-color: var(--gray);
+
+    transition: all .2s;
+}
+
+.container input[type='text']:focus{
+    outline: none;
+    border:1px solid var(--hardGray);
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+}
+
+::-webkit-input-placeholder { 
+    color: var(--blue);
+}
+::-moz-placeholder{ 
+    color: var(--blue);
+}
+:-ms-input-placeholder { 
+    color: var(--blue);
+}
+:-moz-placeholder { 
+    color: var(--blue);
+}
+
+.paginate{
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    margin: 30px;
+}
+
+.paginate a{
+    text-decoration: none;
+    font-family: 'Abel', sans-serif;
+    font-size: 1.3rem;
+    margin: 0 5px
+}
+
+.percentCircle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 5px;
+    margin-right: 5px;
+
+    background-color: var(--blue);
+    height:50px;
+    width: 50px;
+    border-radius:50%;
+}
+
+.percentCircle div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height:40px;
+    width: 40px;
+    border-radius: 50%;
+    border: 3px solid var(--lightGreen);
+}
+.percentCircle a{
+    color: var(--lightGreen)
+}
+
+
+
+@media only screen and (max-width: 740px) {
+    .paginate a{
+        font-size: 1rem;
+        margin: 0 5px
+    }
+    .percentCircle {
+        height:36px;
+        width: 36px;
+        }
+    
+    .percentCircle div{
+        height:30px;
+        width: 30px;
+        border: 2px solid var(--white);
+    }
+}

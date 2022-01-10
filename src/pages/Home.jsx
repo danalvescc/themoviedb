@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import Movie from '../components/Movie';
-import Header from '../components/Header';
-import consts from '../consts';
 import styles from '../styles/pages/Home.module.css';
+import getGenre from '../services/getGenre';
+import getMovies from '../services/getMovies';
 
 const Home = () => {
     const [movies, setMovies] = useState([]);
@@ -11,53 +11,35 @@ const Home = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [page, setPage] = useState(1); 
 
-    //inicial
     useEffect(() =>{
-        fetchGenre()
+        const request = async () => {
+            const response = await getGenre();
+            setGenres(response.genres.map(i=> ({
+                ...i, 
+                formated: i.name.toLowerCase()
+            })))
+        }
+        request();
     }, [])
 
-    //requisições
     useEffect(()=>{
-        fetchData()
+        const request = async () => {
+            let genreFiltered = genres.find(i => i.formated === inputSearch)
+            var response = await getMovies(inputSearch, genreFiltered, page)
+
+            setMovies(response.results)
+            setTotalPages(response.total_results? ( response.total_pages - 1 ) * 4 + Math.ceil((response.total_results % 20)/4) : 0)
+        }
+        request();
     }, [inputSearch, page])
 
     useEffect(()=>{
         setPage(1)
     }, [inputSearch])
 
-    async function fetchGenre(){
-        const response = await fetch(consts.genre_link);
-        const arr = await response.json()
-        const arrComparar = arr.genres.map(i=> ({
-            ...i, 
-            formated: i.name.toLowerCase()
-        }))
-        
-        setGenres(arrComparar)
-    }
-
-    async function fetchData(){
-        let link= ''
-        let cod = genres.find(i => i.formated === inputSearch)
-
-        if(inputSearch.length > 0 && cod === undefined)
-            link = consts.search_link  +"&query=" + inputSearch
-        else if(cod != undefined)
-            link = consts.discover_link + '&with_genres=' + cod.id
-        else
-            link = consts.discover_link
-        link += "&page=" + Math.ceil(page/4)
-
-        const response = await fetch(link);
-        const arr = await response.json()
-
-        setMovies(arr.results)
-        setTotalPages(arr.total_results? ( arr.total_pages - 1 ) * 4 + Math.ceil((arr.total_results % 20)/4) : 0)
-    }
-
-    function renderMovie(){
+    function Movies(){
         let length = movies.length
-        if(length == 0)
+        if(length === 0)
             return ''
         else{
             let min = ((page - 1)% 4 ) * 5
@@ -68,11 +50,11 @@ const Home = () => {
         }
     }
 
-    function criarArray(start, end){
+    function createArray(start, end){
         return Array(end - start + 1).fill().map((_, idx) => start + idx)
     }
 
-    function renderPaginate(){
+    function Paginate(){
         let max, min = 0;
 
         if(page < 3)
@@ -88,11 +70,11 @@ const Home = () => {
         else
             max = page + 2
 
-        let arr = criarArray(min, max)        
+        let arr = createArray(min, max)        
         
         return arr.map(i=> {
             return (
-                <div className={i == page? styles.percentCircle: styles.paginationItem}>
+                <div className={i === page? styles.percentCircle: styles.paginationItem}>
                     <div>
                         <a href="#" onClick={() => setPage(i)}>{i}</a>
                     </div>
@@ -101,7 +83,7 @@ const Home = () => {
         })
     }
 
-    function handleOnChange(e){
+    function handleChange(e){
         setInputSearch(e.target.value)
     }
       
@@ -113,16 +95,14 @@ const Home = () => {
                     id="filmName"
                     className="inputSearch"
                     placeholder="Busque um filme por nome, ano ou gênero..."
-                    onChange={
-                        handleOnChange
-                    }/>
+                    onChange={handleChange}/>
                 {movies.length? 
-                renderMovie(): 
+                <Movies/>   : 
                 <h2> Nenhum filme encontrado...</h2>}
                 <div className={styles.paginate}>
-                    <a href="#" className={page == 1 && "hide" } onClick={() => setPage(page - 1)}>Anterior</a>
-                    {renderPaginate()}
-                    <a href="#" className={page == totalPages && "hide" } onClick={() => setPage(page + 1)}>Próximo</a>
+                    <a href="#" className={page === 1 && "hide" } onClick={() => setPage(page - 1)}>Anterior</a>
+                        <Paginate/>
+                    <a href="#" className={page === totalPages && "hide" } onClick={() => setPage(page + 1)}>Próximo</a>
                 </div>
             </section>
         </>

@@ -1,14 +1,14 @@
 import consts from '../consts'
 import styles from '../styles/components/Movie.module.css'
-import {ConverterData} from '../Utils/Converter'
+import {ConverterData} from '../utils/convertValues'
 
 function Movie(props){
     const {title,overview, poster_path, genre_ids, id, vote_average, release_date} = props.movie;
     const genres = props.genres;
 
-    function renderGenre(){
+    function Genre(){
         return genre_ids.map(id=> {
-            let item = genres.find(g => g.id == id)
+            let item = genres.find(g => g.id === id)
             return <li key={id}>{item&&item.name}</li>
         })
     }
@@ -32,9 +32,7 @@ function Movie(props){
                         {overview}
                     </p>
                     <ul>
-                        {
-                            renderGenre()
-                        }
+                        <Genre/>
                     </ul>
                 </div>
             </div>

@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import {useParams} from 'react-router-dom';
 import consts from '../consts'
-import {ConverterData, ConverterHora, ConverterMoeda} from '../Utils/Converter'
+import {ConverterData, ConverterHora, ConverterMoeda} from '../utils/convertValues'
 import styles from '../styles/pages/MoviePage.module.css'
-import languages from '../Utils/Languages.json'
+import languages from '../utils/Languages.json'
+import movieStatus from '../utils/movieStatus'
 import Video from '../components/Video'
+import getMovie from '../services/getMovie';
+import getVideoMovie from '../services/getVideoMovie';
 
 function MoviePage(){
     let {id} = useParams();
@@ -12,53 +15,26 @@ function MoviePage(){
     const [video, setVideo] = useState('')
     
     useEffect(() =>{
-        fetchMovie()
-        fetchVideo()
+        const requests = async () => {
+            setMovie(await getMovie(id))
+
+            const response = await getVideoMovie(id)
+            console.log(response)
+            response.results.length && setVideo(response.results[0].key)
+        }
+        requests()
     }, [])
 
-    async function fetchMovie(){
-        const response = await fetch(consts.movie_link + id + '?language=pt-BR&' + consts.api_key);
-        const arr = await response.json()
-        setMovie(arr)
-    }
-
-    async function fetchVideo(){
-        const response = await fetch(consts.movie_link  + id + '/videos?language=pt-BR&' + consts.api_key);
-        const arr = await response.json()
-        
-        if(arr.results.length > 0){
-            setVideo(arr.results[0].key)
-        }
-    }
-
-    function renderGenre(){
+    function Genres(){
         if(movie.genres){
             return movie.genres.map(i=> {
                 return <li key={i.id}>{i.name}</li>
             })
-        }
+        }else
+            return <></>;
     }
 
-    function movieStatus(status){
-        switch(status){
-            case 'Released':
-                return 'Liberados'
-            case 'Rumored':
-                return 'Rumores'
-            case 'Planned':
-                return 'Planejado'
-            case 'In Production':
-                return 'Em Produção'
-            case 'Post Production':
-                return 'Pós-produção'
-            case 'Canceled':
-                return 'Cancelado'
-            default:
-                return ''
-        }
-    }
-
-    return movie != {} && 
+    return !!movie && 
             <>
                 <section className={styles.container}>
                     <header>
@@ -79,7 +55,7 @@ function MoviePage(){
                                 </div>
                                 <div className={styles.card}>
                                     <h3>Idioma</h3>
-                                    <p>{movie.original_language && languages.find(i=> i.code == movie.original_language).name}</p>
+                                    <p>{movie.original_language && languages.find(i=> i.code === movie.original_language).name}</p>
                                 </div>
                                 <div className={styles.card}>
                                     <h3>Duração</h3>
@@ -100,7 +76,7 @@ function MoviePage(){
                             </div>
                             <footer>
                                 <ul>
-                                    {renderGenre()}
+                                    <Genres/>
                                 </ul>
                                 <div className={styles.percentCircle}>
                                     <div>

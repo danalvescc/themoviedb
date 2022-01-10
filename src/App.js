@@ -1,6 +1,6 @@
 import Home from './pages/Home.jsx'
 import MoviePage from './pages/MoviePage.jsx'
-import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Route  } from "react-router-dom";
 import Header from './components/Header.jsx';
 
 
